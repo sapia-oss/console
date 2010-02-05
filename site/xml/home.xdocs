@@ -1,0 +1,464 @@
+<sapia:page title="Console" xmlns:sapia="http://www.sapia-oss.org/2003/XSL/Transform">
+  <sapia:refreshMenu page="leftmenu.html" />
+  <sapia:sect1 title="Console">
+    <sapia:section>
+      <sapia:path name="home" href="../../home.html" />
+      <sapia:path name="projects" />
+    </sapia:section>
+    <toc/>
+    <sapia:sect2 title="Overview">
+    
+      <p>This project offers a simple API to manipulate command-lines and create command-line
+      interfaces.</p>
+    </sapia:sect2>
+    
+    <sapia:sect2 title="Learning by Example">
+      <sapia:sect-desc>
+       <p>The examples below should prove a thorough enough introduction. For more
+       details, see the <a href="api/index.html">javadoc</a>.</p>
+      </sapia:sect-desc>
+      <sapia:sect3 title="Creating a command-line object...">
+      
+        <sapia:sect4 title="...from a string">
+          <sapia:code>
+// creating a CmdLine from a string        
+CmdLine cmd = 
+ CmdLine.parse("arg1 arg2 -opt1 -opt2 \"this is opt2\"");</sapia:code>
+       </sapia:sect4>
+       
+        <sapia:sect4 title="...from a string array">       
+
+          <sapia:code>
+...
+public static void main(String[] args){        
+  CmdLine cmd = CmdLine.parse(args);
+}
+...</sapia:code>
+
+        </sapia:sect4>
+        <sapia:sect4 title="...programmatically">
+          <sapia:code>
+CmdLine cmd = new CmdLine();
+cmd.addArg("arg1")
+   .addArg("arg2")
+   .addOption("opt1")
+   .addOption("opt2", ""\this is opt2\"");</sapia:code>
+        </sapia:sect4>        
+      </sapia:sect3>
+      <sapia:sect3 title="Iterating...">
+        <sapia:sect4 title="...through options and arguments">      
+<sapia:code>
+CmdLineElement elem;
+
+while(cmd.hasNext()){
+  elem = cmd.next();
+  System.out.println("name: " + elem.getName());
+  if(elem instanceof Option){
+    System.out.println(((Option)elem).getValue());
+  }
+}</sapia:code>
+        </sapia:sect4>
+        
+        <sapia:sect4 title="...through the arguments only">      
+<sapia:code>
+
+// the filterArgs() method returns the
+// Arg instances (no Option instances)
+// in a new CmdLine instance - the 
+// original CmdLine instance remains
+// intact.
+
+CmdLine args = cmd.filterArgs();
+Arg arg;
+
+while(cmd.hasNext()){
+  arg = (Arg)cmd.next();
+  System.out.println("name: " + arg.getName());
+}
+
+// or (to avoid the casting to Arg):
+
+while(cmd.hasNext()){
+  arg = cmd.assertNextArg();
+  System.out.println("name: " + arg.getName());
+}</sapia:code>
+        </sapia:sect4>
+        
+        <sapia:sect4 title="Resetting to iterate again...">
+<sapia:code>
+while(cmd.hasNext()){
+  arg = (Arg)cmd.next();
+  System.out.println("name: " + arg.getName());
+}        
+cmd.reset();
+while(cmd.hasNext()){
+  arg = (Arg)cmd.next();
+  System.out.println("name: " + arg.getName());
+}        
+cmd.reset();</sapia:code>
+        </sapia:sect4>
+        
+      </sapia:sect3>
+
+      <sapia:sect3 title="Playing with options">
+      
+        <sapia:sect4 title="Testing that an option exists">
+<sapia:code>
+
+// prints 'Test 1' if an option with
+// the given name exists AND has a value
+// (is of the form: -opt1 optValue)
+if(cmd.containsOption("opt1", true){
+  System.out.println("Test 1");
+}
+
+// prints 'Test 2' if an option with
+// the given name exists and whether it 
+// has a value or not
+// (is of the form: -opt1 optValue
+// or -opt1 -opt2 -opt3...)
+if(cmd.containsOption("opt1", false){
+  System.out.println("Test 2");
+}</sapia:code>
+        </sapia:sect4>
+        
+        <sapia:sect4 title="Asserting">
+<sapia:code>
+try{
+  // Returns the Option object with the
+  // given name if it exists AND has a value
+  // (is of the form: -opt1 optValue),
+  // else throws an exception.
+  Option opt1 = cmd.assertOption("opt1", true);
+}catch(InputException e){
+  System.out.println(e.getMessage());
+}</sapia:code>
+
+<sapia:code>
+try{
+  // Returns the Option object with the
+  // given name if it exists, with a a value
+  // or not, else throws an exception.
+  Option opt1 = cmd.assertOption("opt1", false);
+}catch(InputException e){
+  System.out.println(e.getMessage());
+}</sapia:code>
+        </sapia:sect4>        
+      
+      </sapia:sect3>
+      <sapia:sect3 title="Playing with arguments">
+        <sapia:sect4 title="Is the next element an argument?">
+          <sapia:code>
+if(cmd.isNextArg()){
+  Arg arg = cmd.assertNextArg();
+  ...
+}
+else{
+ // do something...
+}
+
+// alternative:
+
+try{
+  Arg arg = cmd.assertNextArg();
+  ...
+}catch(InputException e){
+  // next element is not an Arg...
+  // do something...
+}</sapia:code>
+        </sapia:sect4>
+        <sapia:sect4 title="Test for the presence of required arguments">
+<sapia:code>
+String[] required = new String[]{"arg1", "arg2", "arg3"};
+try{
+  // will work
+  Arg arg = cmd.assertNextArg(required);
+  if(arg1.getName().equals("arg1"){
+    //...
+  }
+  else if(arg1.getName().equals("arg2"){
+    //...
+  }  
+  else {
+    //...
+  }    
+}catch(InputException e){
+  // no arg found with name 
+  // arg1, arg2 or arg3.
+}</sapia:code>
+        </sapia:sect4>
+        
+      </sapia:sect3>
+      <sapia:sect3 title="Converting...">
+        <sapia:sect4 title="...to an array">
+<sapia:code>
+String[] args = cmd.toArray();</sapia:code>
+        </sapia:sect4>
+        <sapia:sect4 title="...to an array with options at the beginning">
+<sapia:code>
+String[] args = cmd.toArrayOptionsFirst();</sapia:code>
+        </sapia:sect4>
+        <sapia:sect4 title="...to an array with options at the end">
+<sapia:code>
+String[] args = cmd.toArrayOptionsLast();</sapia:code>
+        </sapia:sect4>
+        <sapia:sect4 title="...to a string">
+<sapia:code>
+String args = cmd.toString();</sapia:code>
+        </sapia:sect4>                
+        
+      </sapia:sect3>
+      <sapia:sect3 title="Executing Native processes...">
+<sapia:code>
+Cmd cmd = CmdLine.parse("java -help");
+ExecHandle processHandle = cmd.exec();
+
+// you can get a hold of the java.lang.Process object:
+Process proc = processHandle.getProcess();
+
+// you can acquire the processes input and error streams:
+InputStream in  = processHandle.getInputStream();
+InputStream err = processHandle.getErrStream();
+
+// you MUST always call close() on the ExecHandle when finished:
+
+try{
+  // do stuff with handle
+}finally{
+  processHandle.close();
+}
+
+// calling close() on one of the streams that you have acquired 
+// from the ExecHandle will also close that handle (so if you
+// call close() on one of the streams, you need not calling close()
+// on the handle.
+
+try{
+  // do stuff with stream
+}finally{
+  in.close();
+}
+</sapia:code>
+      
+      </sapia:sect3>
+        
+    </sapia:sect2>
+    <sapia:sect2 title="Implementing a Command-Line Interface">
+      <sapia:sect-desc>
+        The API provides you with a few classes an interfaces that could
+        help you build command-line interfaces. This section describes the steps
+        to follow, in a no-nonsense approach.
+      </sapia:sect-desc>
+      <sapia:sect3 title="Architecture">
+        <p>The architecture separates input and display from logic. Input and display are handled by
+        the "console", logic is performed by "commands" that are parsed from the input. The main 
+        classes/interfaces involved are the following:</p>
+        <ol>
+          <li>
+            <sapia:class><a href="api/org/sapia/console/CommandConsole.html">CommandConsole</a></sapia:class>: 
+            waits for user input, and displays output. Creates executable commands from the input.
+          </li>
+          <li><sapia:class><a href="api/org/sapia/console/Command.html">Command</a></sapia:class>: 
+           the object form of the user input - which is parsed by the console; command instances are more
+           then a passive representation of user input: they implement a command's business logic.
+          </li>
+          <li><sapia:class><a href="api/org/sapia/console/CommandFactory.html">CommandFactory</a></sapia:class>:
+           a <sapia:class>CommandConsole</sapia:class> takes a pluggable <sapia:class>CommandFactory</sapia:class>
+           to create command instances.
+          </li>
+          <li>Upon execution, a <sapia:class>Command</sapia:class> instance is given a 
+          <sapia:class><a href="api/org/sapia/console/Context.html">Context</a></sapia:class>
+           that encapsulates the "owning" <sapia:class>CommandConsole</sapia:class>, and the command-line that was entered
+           by the user - in the form of a <sapia:class>CmdLine</sapia:class> object - (<b>minus the first argument</b>, which is
+           assumed to be the command's name and is handed over to the <sapia:class>CommandFactory</sapia:class>, which creates
+          <sapia:class>Command</sapia:class> instances based on the command name).
+          </li>
+        </ol>
+      </sapia:sect3>
+      
+      <sapia:sect3 title="Flow">
+        <ul>
+          <li>A <sapia:class>CommandConsole</sapia:class> is created with a <sapia:class>CommandFactory</sapia:class>;</li>
+          <li>the <sapia:command>start()</sapia:command> method is called on the console;</li>
+          <li>the <sapia:command>start()</sapia:command> method:
+            <ul>
+              <li>waits for user input;</li>
+              <li>parses the input to create a <sapia:class>CmdLine</sapia:class>;</li>
+              <li>takes the first argument from the command-line object (assumed to be the command name) and
+                hands it over to the command factory;</li>
+              <li>the command factory:
+                <ul>
+                  <li>creates a <sapia:class>Command</sapia:class> object from the name it receives
+                  and returns it...</li>
+                  <li>... or throws a <sapia:class>CommandNotFoundException</sapia:class> if it does not
+                  know about the command.</li>
+                </ul>
+              </li>
+              <li>If the factory could not find the command, the console displays a message stating so.</li>
+              <li>Else it calls the command's <sapia:command>execute()</sapia:command> method, passing to the
+              latter a <sapia:command>Context</sapia:command> instance.</li>
+              <li>The command performs its operations and outputs the result to the console - accessing the latter
+              through its context</li>.
+              <li>Once a command has been executed, the <sapia:command>start()</sapia:command> method goes 
+                back to wait on user input.</li>
+            </ul>
+          </li>          
+        </ul>
+      </sapia:sect3>
+      <sapia:sect3 title="Implementation">
+        <sapia:sect4 title="Implement the Factory">
+<sapia:code>
+public class HelloWorldFactory implements CommandFactory{
+
+  /**
+   * Constructor for HelloWorldFactory.
+   */
+  public HelloWorldFactory() {
+    super();
+  }
+  
+  public Command getCommandFor(String name) 
+    throws CommandNotFoundException {
+    
+    if(name.equalsIgnoreCase("hello")){
+      return new HelloWorldCommand();
+    }
+    else if(name.equalsIgnoreCase("quit") || 
+             name.equalsIgnoreCase("exit")){
+      return new QuitCommand();
+    }
+    else{
+      throw new CommandNotFoundException(name);
+    }
+  }
+}</sapia:code>        
+        </sapia:sect4>
+        <sapia:sect4 title="Implement the Console">
+<sapia:code>
+public class HelloWorldConsole extends CommandConsole{
+
+  /**
+   * Constructor for CustomConsole.
+   */
+  public HelloWorldConsole() {
+    super(new HelloWorldFactory());
+  }
+  
+  public static void main(String[] args) {
+    HelloWorldConsole console = new HelloWorldConsole();
+    console.start();
+  }
+}</sapia:code>
+        </sapia:sect4>
+        <sapia:sect4 title="Implement the commands">
+          <sapia:code>
+public class HelloWorldCommand implements Command{
+
+  /**
+   * Constructor for HelloWorldCommand.
+   */
+  public HelloWorldCommand() {
+    super();
+  }
+
+  /**
+   * @see org.sapia.console.Command#execute(Context)
+   */
+  public void execute(Context ctx) 
+              throws AbortException, InputException {
+    ctx.getConsole().println("Hello World");
+  }
+
+}</sapia:code>
+         <p>The following throws an <sapia:class>AbortException</sapia:class>, that signals
+         to the console that it should terminate (the console's <sapia:command>start()</sapia:command>
+         method exits from its loop).</p>
+         <sapia:code>
+public class QuitCommand implements Command{
+
+  /**
+   * Constructor for QuitCommand.
+   */
+  public QuitCommand() {
+    super();
+  }
+  
+  /**
+   * @see org.sapia.console.Command#execute(Context)
+   */
+  public void execute(Context ctx) 
+              throws AbortException, InputException {
+    throw new AbortException();
+  }
+
+}</sapia:code>         
+        </sapia:sect4>
+        <sapia:sect4 title="Trying it Out">
+          <p>
+            <ul>
+              <li>Start the <sapia:class>HelloWorldConsole</sapia:class>;</li>
+              <li>type "hello" in the console's window;</li>
+              <li>"hello world" is displayed;</li>
+              <li>type "quit";</li>
+              <li>"Bye..." is displayed and the console terminates.</li>
+            </ul>
+          </p>
+          <p>Where does this "Bye..." come from? A <sapia:class>
+          <a href="api/org/sapia/console/ConsoleListener.html">ConsoleListener</a></sapia:class> can be set on
+          the console and is called by the latter when certain events occur. The interface specifies the 
+          following methods (described by the javadoc):</p>
+          <sapia:code>
+public interface ConsoleListener {
+  
+  /**
+   * Called when the console starts (can be implemented to 
+   * display
+   * welcome message).
+   */
+  public void onStart(Console cons);
+
+  /**
+   * Called when the console cannot interpret a given 
+   * command (Can be 
+   * implemented to display an error message).
+   */  
+  public void onCommandNotFound(Console cons, 
+                                String commandName);  
+
+  /**
+   * Called when the console exits (can be implemented 
+   * to display a good-bye message).
+   */  
+  public void onAbort(Console cons);  
+
+}</sapia:code>
+          
+          <p>By default, the <sapia:class>CommandConsole</sapia:class> class uses a <sapia:class>ConsoleListenerImpl</sapia:class>
+          instance - that displays "Bye..." in its <sapia:command>onAbort()</sapia:command> method.
+          You could implement your own and assign it to the console, through the 
+          <sapia:command>setCommandListener()</sapia:command> method (offered by the <sapia:class>CommandConsole</sapia:class>
+          class.</p>
+          <p>By the same token, you could pass a custom context to the command instances (suppose you want to encapsulate
+          other objects in the context). To do so:</p>
+          <ul>
+            <li>Create your context class by inheriting from 
+            <sapia:class><a href="api/org/sapia/console/Context.html">Context</a></sapia:class>;</li>
+            <li>Override the <sapia:command>newContext()</sapia:command> template method in the
+            <sapia:class>CommandConsole</sapia:class> class so that it returns instances of your context class.</li>
+          </ul>
+          <sapia:note>
+            A <sapia:class>Context</sapia:class> instance is created for every command object.
+          </sapia:note>
+        </sapia:sect4>
+
+      </sapia:sect3>
+    </sapia:sect2>
+    <sapia:sect2 title="Conclusion">
+      <p>We hope this hands-on tutorial/implentation guide as been useful. Use the Console API to manipulate command-lines
+      or to create command-line interfaces/consoles, and dig into the javadoc to explore the various "extension points". 
+      Command-line interfaces are a quick, powerful alternative to GUIs and can prove a quick way to implement interaction
+      with your applications.
+      </p>
+    </sapia:sect2>
+  </sapia:sect1>
+</sapia:page>
