@@ -1,8 +1,0 @@
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. 
-Nunc tellus augue, convallis eget, fermentum nec, accumsan eu, 
-sem. Cum sociis natoque penatibus et magnis dis parturient 
-montes, nascetur ridiculus mus. Proin a mauris sit amet nibh 
-ultricies vulputate. Nullam dolor felis, tempus eu, euismod 
-non, semper at, nisl. Aliquam erat volutpat. Suspendisse 
-rutrum dolor id purus. Praesent sed tortor. Mauris porttitor 
-sagittis arcu. Nunc gravida massa sed eros. Ut elit.
