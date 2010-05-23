@@ -6,7 +6,7 @@
 
   <groupId>org.sapia</groupId>
   <artifactId>sapia_console</artifactId>
-  <version>1.4</version>
+  <version>1.5-SNAPSHOT</version>
 
   <organization>
     <name>Sapia OSS</name>
