@@ -26,6 +26,7 @@ import java.io.*;
 public class CommandConsole extends Console {
   private CommandFactory  _fac;
   private ConsoleListener _listener = new ConsoleListenerImpl();
+  
 
   /**
    * Creates an instance of this class with the given factory.
@@ -46,7 +47,6 @@ public class CommandConsole extends Console {
    * @param in The input stream of the console.
    * @param out The output stream of the console.
    * @param fac A <code>CommandFactory</code>.
->>>>>>> 1.6
    */
   public CommandConsole(InputStream in, OutputStream out, CommandFactory fac) {
     super(in, out);
@@ -97,6 +97,7 @@ public class CommandConsole extends Console {
         }
       } catch (InputException e) {
         this.println(e.getMessage());
+        
       } catch (AbortException e) {
         _listener.onAbort(this);
 
