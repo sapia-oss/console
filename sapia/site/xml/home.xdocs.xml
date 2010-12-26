@@ -12,6 +12,7 @@
     <sapia:section>
       <sapia:path name="home" href="../../home.html" />
       <sapia:path name="projects" />
+      <sapia:path name="console" />
     </sapia:section>
     <toc/>
     <sapia:sect2 title="Overview">
