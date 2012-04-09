@@ -6,8 +6,8 @@ package org.sapia.console;
  *
  * @see CommandConsole#newContext()
  * @see Command
+ * 
  * @author Yanick Duchesne
- * 29-Nov-02
  */
 public class Context {
   private Console _cons;
@@ -24,7 +24,7 @@ public class Context {
   /**
    * Returns this context's console.
    *
-   * @return this context's <code>Console</code>
+   * @return this context's {@link Console}.
    */
   public Console getConsole() {
     return _cons;
@@ -33,7 +33,7 @@ public class Context {
   /**
    * Returns this context's command-line object.
    *
-   * @return this context's <code>Console</code>
+   * @return this context's {@link Console}.
    */
   public CmdLine getCommandLine() {
     return _cmdLine;

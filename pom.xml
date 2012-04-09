@@ -31,6 +31,23 @@
 
   <packaging>jar</packaging>
 
+  <repositories>
+    <repository>
+      <id>jline</id>
+      <name>JLine Project Repository</name>
+      <url>http://jline.sourceforge.net/m2repo</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>jline</groupId>
+      <artifactId>jline</artifactId>
+      <version>0.9.9</version>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+
   <build>
     <directory>target</directory>
     <outputDirectory>target/classes</outputDirectory>

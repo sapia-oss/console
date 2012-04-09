@@ -21,7 +21,6 @@ import java.io.*;
  * </pre>
  *
  * @author Yanick Duchesne
- * 29-Nov-02
  */
 public class CommandConsole extends Console {
   private CommandFactory  _fac;
@@ -31,7 +30,7 @@ public class CommandConsole extends Console {
   /**
    * Creates an instance of this class with the given factory.
    *
-   * @param fac A <code>CommandFactory</code>.
+   * @param fac a {@link CommandFactory}.
    */
   public CommandConsole(CommandFactory fac) {
     super();
@@ -43,12 +42,11 @@ public class CommandConsole extends Console {
    * input and output streams passed in are used internally for
    * command-line reading and display output respectively.
    *
-   * @param a <code>CommandFactory</code>.
-   * @param in The input stream of the console.
-   * @param out The output stream of the console.
-   * @param fac A <code>CommandFactory</code>.
+   * @param in the {@link ConsoleInput}.
+   * @param out the {@link ConsoleOutput}.
+   * @param fac a {@link CommandFactory}
    */
-  public CommandConsole(InputStream in, OutputStream out, CommandFactory fac) {
+  public CommandConsole(ConsoleInput in, ConsoleOutput out, CommandFactory fac) {
     super(in, out);
     _fac = fac;
   }
@@ -61,15 +59,13 @@ public class CommandConsole extends Console {
   }
 
   /**
-   * Starts this console in the current thread and loops indefinily on
-   * input/display until an <code>AbortException</code> is thrown by  a
-   * <code>Command</code> instance.
+   * Starts this console in the current thread and loops indefinitely on
+   * input/display until an {@link AbortException} is thrown by  a
+   * {@link Command} instance.
    */
   public void start() {
-    int    idx  = 0;
     String line;
     String name = null;
-    String args = null;
     _listener.onStart(this);
 
     while (true) {

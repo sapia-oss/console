@@ -3,8 +3,6 @@ package org.sapia.console.table;
 
 /**
  * @author Yanick Duchesne
- * 2002-03-04
- *
  */
 public class Row {
   private Table   _table;
@@ -60,8 +58,6 @@ public class Row {
       _cells[i].pack(h);
     }
 
-    int lines = biggest.getHeight();
-
     for (int i = 0; i < h; i++) {
       for (int j = 0; j < _cells.length; j++) {
         String cell = _cells[j].getContent(i);
@@ -73,8 +69,8 @@ public class Row {
       }
     }
 
-    _table.getWriter().println(content.toString());
-    _table.getWriter().flush();
+    _table.getOutput().println(content.toString());
+    _table.getOutput().flush();
     _flushed = true;
   }
 }

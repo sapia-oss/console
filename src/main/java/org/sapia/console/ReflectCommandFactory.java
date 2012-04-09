@@ -4,22 +4,23 @@ import java.util.*;
 
 
 /**
- * A command factory that creates <code>Command</code> instances
+ * A command factory that creates {@link Command} instances
  * dynamically, by resolving the command name to a class. The command's
  * name has its first letter capitalized, and it is prepended with successive
  * package names; the first command class that is found for a given package has
  * an object instantiated from it.
  * <p>
  * If all packages have been visited and no command class was found
- * for the given command name, then a <code>CommandNotFoundException</code>
+ * for the given command name, then a {@link CommandNotFoundException}
  * is thrown.
  *
  * @see #getCommandFor(String)
+ * 
  * @author Yanick Duchesne
- * 29-Nov-02
  */
 public class ReflectCommandFactory implements CommandFactory {
-  private List _pckgs = new ArrayList();
+	
+  private List<String> _pckgs = new ArrayList<String>();
 
   /**
    * @see org.sapia.console.CommandFactory#getCommandFor(String)

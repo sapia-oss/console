@@ -2,11 +2,10 @@ package org.sapia.console;
 
 
 /**
- * Listener that is called back by a <code>CommandConsole</code>
+ * Listener that is called back by a {@link CommandConsole}
  * instance at various moments.
  *
  * @author Yanick Duchesne
- * 29-Nov-02
  */
 public interface ConsoleListener {
   /**

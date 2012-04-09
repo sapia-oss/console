@@ -6,10 +6,12 @@ package org.sapia.console;
  * invalid input.
  *
  * @author Yanick Duchesne
- * 23-Dec-02
  */
 public class InputException extends Exception {
-  public InputException(String msg) {
+ 
+	static final long serialVersionUID = 1L;
+	
+	public InputException(String msg) {
     super(msg);
   }
 }

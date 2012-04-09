@@ -1,7 +1,6 @@
 package org.sapia.console;
 
 import java.io.File;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -104,14 +103,14 @@ public class CmdLine implements Cloneable {
   static final char QUOTE    = '\"';
   static final char ESCAPE   = '\\';
   static final char DASH     = '-';
-  private List      _elems   = new ArrayList();
-  private Map       _options = new HashMap();
-  private int       _index;
+  private List<CmdElement>     _elems   = new ArrayList<CmdElement>();
+  private Map<String, Option>  _options = new HashMap<String, Option>();
+  private int       					 _index;
 
   public CmdLine() {
   }
 
-  private CmdLine(List elems, Map options) {
+  private CmdLine(List<CmdElement> elems, Map<String, Option> options) {
     _elems     = elems;
     _options   = options;
   }
@@ -138,7 +137,7 @@ public class CmdLine implements Cloneable {
   /**
    * Adds an argument.
    *
-   * @param arg an <code>Arg</code> instance.
+   * @param arg an {@link Arg} instance.
    */
   public CmdLine addArg(Arg arg) {
     _elems.add(arg);
@@ -150,7 +149,7 @@ public class CmdLine implements Cloneable {
    * Adds an argument.
    *
    * @param index the index at which to add the argument.
-   * @param arg an <code>Arg</code> instance.
+   * @param arg an {@link Arg} instance.
    */
   public CmdLine addArg(int index, Arg arg) {
     _elems.add(index, arg);
@@ -173,7 +172,7 @@ public class CmdLine implements Cloneable {
   /**
    * Adds an option.
    *
-   * @param opt an <code>Option</code>.
+   * @param opt an {@link Option}.
    */
   public CmdLine addOpt(Option opt) {
     _elems.add(opt);
@@ -183,33 +182,33 @@ public class CmdLine implements Cloneable {
   }
 
   /**
-   * Returns the <code>CmdElement</code> at the specified index.
+   * Returns the {@link CmdElement} at the specified index.
    *
    * @param i an index.
-   * @return a <code>CmdElement</code>.
+   * @return a {@link CmdElement}.
    */
   public CmdElement get(int i) {
-    return (CmdElement) _elems.get(i);
+    return _elems.get(i);
   }
 
   /**
-   * Returns the last <code>CmdElement</code> in this command-line.
-   * @return a <code>CmdElement</code>.
+   * Returns the last {@link CmdElement} in this command-line.
+   * @return a {@link CmdElement}.
    */
   public CmdElement last() {
-    return (CmdElement) _elems.get(_elems.size() - 1);
+    return _elems.get(_elems.size() - 1);
   }
 
   /**
-   * Returns the first <code>CmdElement</code> in this command-line.
-   * @return a <code>CmdElement</code>.
+   * Returns the first {@link CmdElement} in this command-line.
+   * @return a {@link CmdElement}.
    */
   public CmdElement first() {
-    return (CmdElement) _elems.get(0);
+    return _elems.get(0);
   }
 
   /**
-   * Returns true if the <code>next()</code> method can be called (i.e.:
+   * Returns true if the {@link #next()}) method can be called (i.e.:
    * if the iteration can continue).
    *
    * @return <code>true</code> if the iteration can continue.
@@ -222,17 +221,17 @@ public class CmdLine implements Cloneable {
    * Returns the next command-line element (and internally increments
    * the iteration counter).
    *
-   * @return a <code>CmdElement</code>.
+   * @return a {@link CmdElement}.
    */
   public CmdElement next() {
-    return (CmdElement) _elems.get(_index++);
+    return _elems.get(_index++);
   }
 
   /**
    * Returns true if the next element in this instance is an
-   * <code>Arg</code> instance.
+   * {@link Arg} instance.
    * <p>
-   * The <code>hasNext</code> method should be called priorly to ensure
+   * The {@link #hasNext()} method should be called priorly to ensure
    * that a "next" element is indeed present:
    * <p>
    * <pre>
@@ -280,7 +279,7 @@ public class CmdLine implements Cloneable {
    * @see #containsOption(String, String)
    */
   public CmdLine filterArgs() {
-    List args = new ArrayList();
+    List<CmdElement> args = new ArrayList<CmdElement>();
 
     for (int i = 0; i < _elems.size(); i++) {
       if (_elems.get(i) instanceof Arg) {
@@ -342,11 +341,11 @@ public class CmdLine implements Cloneable {
   /**
    * Asserts that an option with the given name exists and returns it.
    *
-   * @return an <code>Option</code> that corresponds to the
+   * @return an {@link Option} that corresponds to the
    * passed in name.
    * @param hasValue indicates if the option must have a value. if <code>hasValue</code> is true, and
-   * this instance has an <code>Option</code> for the given name but that option has no
-   * value, this method throws an <code>InputException</code>.
+   * this instance has an {@link Option} for the given name but that option has no
+   * value, this method throws an {@link InputException}.
    * @param optName the required option's name.
    * @throws InputException if no option with the given name
    * could be found.
@@ -357,17 +356,16 @@ public class CmdLine implements Cloneable {
       throw new InputException("option '" + optName + "' not specified.");
     }
 
-    return (Option) _options.get(optName);
+    return _options.get(optName);
   }
 
   /**
    * Asserts that an option with the given name and value exists
    * and returns it.
    *
-   *
    * @param optName the required option's name.
    * @param value the required option's value.
-   * @return an <code>Option</code> that corresponds to the
+   * @return an {@link Option} that corresponds to the
    * passed in name and value.
    * @throws InputException if no option with the given name and value
    * could be found.
@@ -388,10 +386,9 @@ public class CmdLine implements Cloneable {
    * Asserts that an option with the given name and one of the
    * given values exists and returns it.
    *
-   *
    * @param optName the required option's name.
    * @param values the required option's values.
-   * @return an <code>Option</code> that corresponds to the
+   * @return an {@link Option} that corresponds to the
    * passed in name and one of the given values.
    * @throws InputException if no option with the given name and one
    * of the given values could be found.
@@ -426,12 +423,12 @@ public class CmdLine implements Cloneable {
    *
    * @param name the option's name.
    * @param hasValue indicates if the option must have a value. if <code>hasValue</code> is true, and
-   * this instance has an <code>Option</code> for the given name but that option has no
+   * this instance has an {@link Option} for the given name but that option has no
    * value, this method returns <code>false</code>.
    * @return <code>true</code> if an option with the given name exists.
    */
   public boolean containsOption(String name, boolean hasValue) {
-    Option opt = (Option) _options.get(name);
+    Option opt = _options.get(name);
 
     if (opt == null) {
       return false;
@@ -453,7 +450,7 @@ public class CmdLine implements Cloneable {
    * @return <code>true</code> if an option with the given name and value exists.
    */
   public boolean containsOption(String name, String value) {
-    Option opt = (Option) _options.get(name);
+    Option opt = _options.get(name);
 
     if (opt == null) {
       return false;
@@ -470,9 +467,9 @@ public class CmdLine implements Cloneable {
   }
 
   /**
-   * Adds a <code>CmdElement</code> instance.
+   * Adds a {@link CmdElement} instance.
    *
-   * @param elem a <code>CmdElement</code> instance.
+   * @param elem a {@link CmdElement} instance.
    */
   public void addElement(CmdElement elem) {
     if (elem instanceof Option) {
@@ -489,7 +486,7 @@ public class CmdLine implements Cloneable {
    * Removes the first element in this instance and returns it.
    */
   public CmdElement chop() {
-    CmdElement elem = (CmdElement) _elems.remove(0);
+    CmdElement elem = _elems.remove(0);
 
     if (_index > 0) {
       _index--;
@@ -500,10 +497,10 @@ public class CmdLine implements Cloneable {
 
   /**
    * Removes the first element in this instance and returns it as
-   * an <code>Arg</code>, if it is such.
+   * an {@link Arg}, if it is such.
    */
   public Arg chopArg() {
-    Object elem = _elems.remove(0);
+    CmdElement elem = _elems.remove(0);
 
     if (_index > 0) {
       _index--;
@@ -525,16 +522,14 @@ public class CmdLine implements Cloneable {
 
   /**
    * Returns this instance as an array of strings, such as would be
-   * passed to a <code>main</code> method.
+   * passed to a <code>main()</code> method.
    *
-   * @return an array of <code>String</code>.
+   * @return an array of {@link String}s.
    */
   public String[] toArray() {
-    List   all   = new ArrayList();
-    Option opt;
-    String name;
-    String value;
-
+    List<String> all  = new ArrayList<String>();
+    Option 			 opt;
+    
     for (int i = 0; i < _elems.size(); i++) {
       if (_elems.get(i) instanceof Arg) {
         Arg arg = (Arg) _elems.get(i);
@@ -563,14 +558,12 @@ public class CmdLine implements Cloneable {
    * passed to a <code>main</code> method. This instance's options
    * are placed at the end of the array.
    *
-   * @return an array of <code>String</code>, with options at the end.
+   * @return an array of {@link String}s, with options at the end.
    */
   public String[] toArrayOptionsLast() {
-    List   all     = new ArrayList();
-    List   options = new ArrayList();
+    List<String>   all     = new ArrayList<String>();
+    List<String>   options = new ArrayList<String>();
     Option opt;
-    String name;
-    String value;
 
     for (int i = 0; i < _elems.size(); i++) {
       if (_elems.get(i) instanceof Arg) {
@@ -595,14 +588,12 @@ public class CmdLine implements Cloneable {
    * passed to a <code>main</code> method. This instance's options
    * are placed at the beginning of the array.
    *
-   * @return an array of <code>String</code>, with options at the beginning.
+   * @return an array of {@link String}s, with options at the beginning.
    */
   public String[] toArrayOptionsFirst() {
-    List   all     = new ArrayList();
-    List   options = new ArrayList();
+    List<String>   all     = new ArrayList<String>();
+    List<String>   options = new ArrayList<String>();
     Option opt;
-    String name;
-    String value;
 
     for (int i = 0; i < _elems.size(); i++) {
       if (_elems.get(i) instanceof Arg) {
@@ -625,23 +616,23 @@ public class CmdLine implements Cloneable {
   /**
    * Returns a clone of this instance.
    *
-   * @return a <code>CmdLine</code> that is this instance's copy.
+   * @return a {@link CmdLine} that is this instance's copy.
    */
   public Object clone() {
-    return new CmdLine(_elems, _options);
+    return new CmdLine(new ArrayList<CmdElement>(_elems), new HashMap<String, Option>(_options));
   }
 
   /**
    * Returns this instance as a string.
    *
-   * @return this instance as a <code>String</code>.
+   * @return this instance as a {@link String}.
    */
   public String toString() {
     CmdElement   elem;
     StringBuffer buf = new StringBuffer();
 
     for (int i = 0; i < _elems.size(); i++) {
-      elem = (CmdElement) _elems.get(i);
+      elem = _elems.get(i);
       buf.append(elem.toString());
 
       if (i < (_elems.size() - 1)) {
@@ -653,10 +644,10 @@ public class CmdLine implements Cloneable {
   }
 
   /**
-   * Returns a <code>CmdLine</code> containing the given parameters. This
+   * Returns a {@link CmdLine} containing the given parameters. This
    * method is convenient to recuperate parameters from a main method.
    *
-   * @return a <code>CmdLine</code> instance.
+   * @return a {@link CmdLine} instance.
    */
   public static CmdLine parse(String[] args) {
     StringBuffer buf = new StringBuffer();
@@ -670,9 +661,9 @@ public class CmdLine implements Cloneable {
 
   /**
    * Executes this command-line. Returns the corresponding
-   * <code>ExecHandle</code>, which wraps the executed process.
+   * {@link ExecHandle}, which wraps the executed process.
    *
-   * @return <code>ExecHandle</code>
+   * @return {@link ExecHandle}
    */
   public ExecHandle exec() {
     CmdLineThread th = new CmdLineThread(this);
@@ -683,11 +674,11 @@ public class CmdLine implements Cloneable {
 
   /**
    * Executes this command-line. Returns the corresponding
-   * <code>ExecHandle</code>, which wraps the executed process.
+   * {@link ExecHandle}, which wraps the executed process.
    *
    * @param env the environment variables, or <code>null</code> if no env. variables are to
    * be passed to the process.
-   * @return <code>ExecHandle</code>
+   * @return {@link ExecHandle}
    */
   public ExecHandle exec(String[] env) {
     CmdLineThread th = new CmdLineThread(this, env);
@@ -698,12 +689,12 @@ public class CmdLine implements Cloneable {
 
   /**
    * Executes this command-line. Returns the corresponding
-   * <code>ExecHandle</code>, which wraps the executed process.
+   * {@link ExecHandle}, which wraps the executed process.
    *
    * @param processDir the process base directory.
    * @param env the environment variables, or <code>null</code> if no env. variables are to
    * be passed to the process.
-   * @return <code>ExecHandle</code>
+   * @return {@link ExecHandle}
    */
   public ExecHandle exec(File processDir, String[] env) {
     CmdLineThread th = new CmdLineThread(this, processDir, env);
@@ -716,7 +707,7 @@ public class CmdLine implements Cloneable {
    * Parses the given command-line and returns an instance of
    * this class.
    *
-   * @return a <code>CmdLine</code> instance.
+   * @return a {@link CmdLine} instance.
    */
   public static CmdLine parse(String line) {
     CmdLine      cmd = new CmdLine();

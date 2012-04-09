@@ -6,9 +6,9 @@ package org.sapia.console;
  *
  * @see org.sapia.console.CmdLine
  * @author Yanick Duchesne
- * 23-Dec-02
  */
 public class Option extends CmdElement {
+	
   private String _value;
 
   /**

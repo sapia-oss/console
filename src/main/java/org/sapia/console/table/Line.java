@@ -3,10 +3,10 @@ package org.sapia.console.table;
 
 /**
  * @author Yanick Duchesne
- * 2002-03-05
- *
+ * 
  */
 public class Line {
+	
   StringBuffer _content = new StringBuffer();
   Line         _next;
 
@@ -78,11 +78,9 @@ public class Line {
 
   void addEmptyLine(int width, int cellSpacing) {
     Line current = this;
-    int  count = 1;
 
     while (current._next != null) {
       current = current._next;
-      count++;
     }
 
     Line line = new Line();

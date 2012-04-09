@@ -11,24 +11,24 @@ import org.sapia.console.widgets.Menu;
  * An basic command-line console.
  *
  * @author Yanick Duchesne
- * 29-Nov-02
+ * 
  */
 public class Console {
   public static final String DEFAULT_PROMPT = ">>";
-  private BufferedReader     _in;
-  private PrintWriter        _out;
+  private ConsoleInput       _in;
+  private ConsoleOutput      _out;
   private String             _prompt = DEFAULT_PROMPT;
   private ConsoleSession     _session = new NullConsoleSession();
   private boolean            _emptyLineAfterInput = true; 
   private int _width          = 80;
 
-  public Console(InputStream in, OutputStream out) {
-    _in    = new BufferedReader(new InputStreamReader(in));
-    _out   = new PrintWriter(out, true);
+  public Console(ConsoleInput in, ConsoleOutput out) {
+    _in    = in;
+    _out   = out;
   }
   
   public Console() {
-    this(System.in, System.out);
+    this(ConsoleInput.DefaultConsoleInput.newInstance(), ConsoleOutput.DefaultConsoleOutput.newInstance());
   }
   
   public void setWidth(int width){
@@ -68,24 +68,24 @@ public class Console {
   }
 
   /**
-   * @return the {@link PrintWriter} that is internally used by this console
+   * @return the {@link ConsoleOutput} that is internally used by this console
    * for output.
    */
-  public PrintWriter out() {
+  public ConsoleOutput out() {
     return _out;
   }
 
   /**
-   * @return the {@link BufferedReader} that is internally used for input.
+   * @return the {@link ConsoleInput} that is internally used for input.
    */
-  public BufferedReader in() {
+  public ConsoleInput in() {
     return _in;
   }
 
   /**
-   * @param out the {@link PrintWriter} that is used for output.
+   * @param out the {@link ConsoleOutput} that is used for output.
    */
-  public void setOut(PrintWriter out) {
+  public void setOut(ConsoleOutput out) {
     _out = out;
   }
 
