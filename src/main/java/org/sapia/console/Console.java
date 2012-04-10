@@ -14,13 +14,14 @@ import org.sapia.console.widgets.Menu;
  * 
  */
 public class Console {
+	
   public static final String DEFAULT_PROMPT = ">>";
+  
   private ConsoleInput       _in;
   private ConsoleOutput      _out;
-  private String             _prompt = DEFAULT_PROMPT;
-  private ConsoleSession     _session = new NullConsoleSession();
+  private String             _prompt 						  = DEFAULT_PROMPT;
   private boolean            _emptyLineAfterInput = true; 
-  private int _width          = 80;
+  private int 							 _width    						= 80;
 
   public Console(ConsoleInput in, ConsoleOutput out) {
     _in    = in;
@@ -31,6 +32,9 @@ public class Console {
     this(ConsoleInput.DefaultConsoleInput.newInstance(), ConsoleOutput.DefaultConsoleOutput.newInstance());
   }
   
+  /**
+   * @param width the display width, in number of characters.
+   */
   public void setWidth(int width){
     if(width < 0){
       throw new IllegalArgumentException("Width cannot be negative");
@@ -38,17 +42,13 @@ public class Console {
     _width = width;
   }
   
+  /**
+   * @return the display width, in number of characters
+   */
   public int getWidth(){
     return _width;
   }
-  
-  /**
-   * @param session a {@link ConsoleSession}
-   */
-  public void setSession(ConsoleSession session){
-    _session = session;
-  }
-  
+    
   /**
    * @param lineAfterInput if <code>true</code>, indicates that an empty line should be displayed
    * automatically after user input (true by default).
@@ -164,9 +164,6 @@ public class Console {
       print(msg + " ");
     }
     String input = readLine();
-    if(input != null){
-      _session.buffer(input);
-    }
     if(_emptyLineAfterInput){
       println();
     }
@@ -187,9 +184,6 @@ public class Console {
       print(msg + " ");
     }
     String input = readLine();
-    if(input != null){
-      _session.buffer(input);
-    }
     if(_emptyLineAfterInput){
       println();
     }    
@@ -287,44 +281,6 @@ public class Console {
     repeat(underlineChar, text.length());
     return this;
   }
-
-  /*
-  public Console splashAndCenter(String resource){
-    return doSplash(resource, true);
-  }  
-  
-  public Console splash(String resource){
-    return doSplash(resource, false);
-  }
-  
-  private Console doSplash(String resource, boolean center){
-    InputStream is = getClass().getResourceAsStream(resource);
-    if(is == null){
-      is = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource);
-    }
-    if(is == null){
-      throw new IllegalStateException("Could not find resource: " + resource);
-    }
-    try{
-      BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-      String line = null;
-      while((line = reader.readLine()) != null){
-        if(center){
-          center(line);
-        }
-        else{
-          println(line);
-        }
-      }
-    }catch(IOException e){
-      throw new IllegalStateException("Could not read resource data: " + resource);      
-    }finally{
-      try{
-        is.close();
-      }catch(IOException e){}
-    }
-    return this;
-  }*/
   
   /**
    * Searches for the given resource and returns its content in a string.
