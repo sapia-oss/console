@@ -6,7 +6,7 @@
 
   <groupId>org.sapia</groupId>
   <artifactId>sapia_console</artifactId>
-  <version>1.7-SNAPSHOT</version>
+  <version>1.7</version>
 
   <parent>
     <groupId>org.sapia</groupId>
@@ -15,9 +15,9 @@
   </parent>
 
   <scm>
-    <connection>scm:svn:http://sapia.googlecode.com/svn/trunk/console</connection>
-    <developerConnection>scm:svn:https://sapia.googlecode.com/svn/trunk/console</developerConnection>
-    <url>scm:svn:https://sapia.googlecode.com/svn/branches/trunk/console</url>
+    <connection>scm:svn:http://sapia.googlecode.com/svn/tags/sapia_console-1.7</connection>
+    <developerConnection>scm:svn:https://sapia.googlecode.com/svn/tags/sapia_console-1.7</developerConnection>
+    <url>scm:svn:https://sapia.googlecode.com/svn/branches/tags/sapia_console-1.7</url>
   </scm>
 
   <licenses>
