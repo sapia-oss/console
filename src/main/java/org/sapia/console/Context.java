@@ -16,7 +16,7 @@ public class Context {
   protected Context() {
   }
 
-  void setUp(Console cons, CmdLine cmdLine) {
+  protected void setUp(Console cons, CmdLine cmdLine) {
     _cons      = cons;
     _cmdLine   = cmdLine;
   }

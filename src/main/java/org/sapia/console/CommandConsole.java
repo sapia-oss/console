@@ -26,7 +26,6 @@ public class CommandConsole extends Console {
   private CommandFactory  _fac;
   private ConsoleListener _listener = new ConsoleListenerImpl();
   
-
   /**
    * Creates an instance of this class with the given factory.
    *
@@ -73,6 +72,10 @@ public class CommandConsole extends Console {
         prompt();
         line = readLine();
 
+        if (line == null) {
+          _listener.onAbort(this);
+          break;
+        }
         if (line.length() == 0) {
           continue;
         } else {
