@@ -22,6 +22,6 @@ public class QuitCommand implements Command {
    * @see org.sapia.console.Command#execute(Context)
    */
   public void execute(Context ctx) throws AbortException, InputException {
-    throw new AbortException();
+    throw new AbortException("Quitting");
   }
 }

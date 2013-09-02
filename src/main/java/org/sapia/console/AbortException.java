@@ -9,4 +9,12 @@ package org.sapia.console;
 public class AbortException extends RuntimeException {
 
   private static final long serialVersionUID = 1L;
+  
+  public AbortException(String msg) {
+    super(msg);
+  }
+  
+  public AbortException(String msg, Throwable cause) {
+    super(msg, cause);
+  }
 }
