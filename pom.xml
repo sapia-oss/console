@@ -6,7 +6,7 @@
 
   <groupId>org.sapia</groupId>
   <artifactId>sapia_console</artifactId>
-  <version>1.10-SNAPSHOT</version>
+  <version>1.9-SNAPSHOT</version>
 
   <parent>
     <groupId>org.sapia</groupId>
