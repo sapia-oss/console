@@ -152,7 +152,34 @@ try{
 }catch(InputException e){
   System.out.println(e.getMessage());
 }</sapia:code>
-        </sapia:sect4>        
+        </sapia:sect4>
+        
+        <sapia:sect4 title="Using getOpt()">
+<sapia:code>// Returns the Option object with the
+// given name if it exists, or null.
+Option opt1 = cmd.getOpt("opt1");</sapia:code>
+
+<sapia:code>try{
+  // Returns the Option object with the
+  // given name if it exists, else throws an exception.
+  // The option's value may be null
+  Option opt1 = cmd.getOptNotNull("opt1");
+}catch(InputException e){
+  System.out.println(e.getMessage());
+}</sapia:code>
+
+<sapia:code>try{
+  // Returns the Option object with the
+  // given name if it exists, else throws an exception.
+  // The getValueNotNull() method may then be used to insure that the
+  // value itself is not null for the returned option object.
+  String opt1Value = cmd.getOptNotNull("opt1").getValueNotNull();
+}catch(InputException e){
+  System.out.println(e.getMessage());
+}</sapia:code>
+
+
+        </sapia:sect4>                
       
       </sapia:sect3>
       <sapia:sect3 title="Playing with arguments">

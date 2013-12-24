@@ -40,6 +40,17 @@ public class Option extends CmdElement {
   public String getValue() {
     return _value;
   }
+  
+  /**
+   * @return this option's value.
+   * @throws InputException if no such value could be found.
+   */
+  public String getValueNotNull() {
+    if (_value == null) {
+      throw new InputException("no value found for option: " + _name);
+    }
+    return _value;
+  }
 
   /**
    * Returns this option's value as an integer.
@@ -77,8 +88,7 @@ public class Option extends CmdElement {
         "'");
     }
 
-    return _value.equals("true") || _value.equals("yes") ||
-    _value.equals("on");
+    return _value.equals("true") || _value.equals("yes") || _value.equals("on");
   }
 
   void setValue(String value) {

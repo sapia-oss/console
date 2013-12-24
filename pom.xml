@@ -4,21 +4,14 @@
   <description>A command-line framework</description>
   <url>http://www.sapia-oss.org/projects/console/index.html</url>
 
-  <groupId>org.sapia</groupId>
   <artifactId>sapia_console</artifactId>
   <version>1.10-SNAPSHOT</version>
 
   <parent>
     <groupId>org.sapia</groupId>
     <artifactId>sapia_global</artifactId>
-    <version>1.14</version>
+    <version>1.20</version>
   </parent>
-
-  <scm>
-    <connection>scm:svn:http://sapia.googlecode.com/svn/trunk/console</connection>
-    <developerConnection>scm:svn:https://sapia.googlecode.com/svn/trunk/console</developerConnection>
-    <url>scm:svn:https://sapia.googlecode.com/svn/branches/trunk/console</url>
-  </scm>
 
   <licenses>
     <license>
@@ -49,22 +42,14 @@
   </dependencies>
 
   <build>
-    <directory>target</directory>
-    <outputDirectory>target/classes</outputDirectory>
-    <finalName>${artifactId}-${version}</finalName>
-    <testOutputDirectory>target/test-classes</testOutputDirectory>
- 
-
    <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-            <excludes>
-                <exclude>**/*Point*.java</exclude>
-            </excludes>
-	    <source>1.6</source>
-	    <target>1.6</target>
+           <excludes>
+               <exclude>**/*Point*.java</exclude>
+           </excludes>
         </configuration>
       </plugin>
 

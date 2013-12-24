@@ -7,7 +7,7 @@ package org.sapia.console;
  *
  * @author Yanick Duchesne
  */
-public class InputException extends Exception {
+public class InputException extends RuntimeException {
  
 	static final long serialVersionUID = 1L;
 	

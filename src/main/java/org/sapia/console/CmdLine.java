@@ -358,6 +358,36 @@ public class CmdLine implements Cloneable {
 
     return _options.get(optName);
   }
+  
+  /**
+   * @param optName an option name.
+   * @return the {@link Option} with the given name, or <code>null</code> if no such option
+   * exists.
+   */
+  public Option getOpt(String optName)  {
+    Option opt = _options.get(optName);
+    if (opt == null) {
+      return null;
+    }
+    return opt;
+  }
+  
+  /**
+   * Returns the {@link Option} with the given name, or throws an exception if such an option cannot
+   * be found - the returned option may or may not have a value.
+   * 
+   * @param optName an option name.
+   * @return the {@link Option} with the given name, or <code>null</code> if no such option
+   * exists.
+   * @throws InputException if no option with the given name could be found.
+   */
+  public Option getOptNotNull(String optName) {
+    Option opt = _options.get(optName);
+    if (opt == null) {
+      throw new InputException("option '" + optName + "' not specified.");
+    }
+    return opt;    
+  }
 
   /**
    * Asserts that an option with the given name and value exists

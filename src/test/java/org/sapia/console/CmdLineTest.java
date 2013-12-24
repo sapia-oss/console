@@ -71,6 +71,23 @@ public class CmdLineTest extends TestCase {
     _cmd.assertOption("opt2", "val2");
     _cmd.assertOption("opt2", new String[] { "val1", "val2", "val3" });
   }
+  
+  public void testGetOpt() {
+    assertEquals("val2", _cmd.getOpt("opt2").getValue());
+  }
+  
+  public void testGetOptNotNull() {
+    assertEquals("val2", _cmd.getOpt("opt2").getValue());
+  }
+  
+  public void testGetOptNotNullFails() {
+    try {
+      assertEquals("val2", _cmd.getOptNotNull("opt10").getValue());
+      fail("Option should not have been found");
+    } catch (InputException e) {
+      // ok
+    }
+  }
 
   public void testChop() throws Exception {
     int size = _cmd.size();
