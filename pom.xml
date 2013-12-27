@@ -5,7 +5,7 @@
   <url>http://www.sapia-oss.org/projects/console/index.html</url>
 
   <artifactId>sapia_console</artifactId>
-  <version>1.10-SNAPSHOT</version>
+  <version>1.10</version>
 
   <parent>
     <groupId>org.sapia</groupId>
@@ -57,4 +57,10 @@
 
   </build>
   
+
+  <scm>
+    <connection>scm:svn:https://sapia.googlecode.com/sapia_console-1.10</connection>
+    <developerConnection>scm:svn:https://sapia.googlecode.com/svn/tags/sapia_console-1.10</developerConnection>
+    <url>scm:svn:https://sapia.googlecode.com/svn/sapia_console-1.10</url>
+  </scm>
 </project>
