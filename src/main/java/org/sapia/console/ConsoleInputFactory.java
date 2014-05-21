@@ -21,18 +21,18 @@ public class ConsoleInputFactory {
 	}
 	
 	/**
-	 * @return a {@link ConsoleInput} that wraps the system {@link Console}.
+	 * @return a {@link Jdk6ConsoleInput} that wraps the system {@link Console}.
 	 */
-	public static ConsoleInput createJdk6ConsoleInput() {
+	public static Jdk6ConsoleInput createJdk6ConsoleInput() {
 		return Jdk6ConsoleInput.newInstance();
 	}
 	
 	/**
-	 * @return a {@link ConsoleInput} that wraps a JLine {@link ConsoleReader}.
+	 * @return a {@link JLineConsoleInput} that wraps a JLine {@link ConsoleReader}.
 	 * @throws IOException if an IO problem occurred while trying to create
 	 * the {@link ConsoleInput}.
 	 */
-	public static ConsoleInput createJLineConsoleInput() throws IOException {
+	public static JLineConsoleInput createJLineConsoleInput() throws IOException {
 		return JLineConsoleInput.newInstance();
 	}
 	

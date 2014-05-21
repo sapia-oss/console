@@ -14,7 +14,21 @@ import org.sapia.console.widgets.Menu;
  * 
  */
 public class Console {
-	
+  
+  public interface ConsoleIO {
+    
+    /**
+     * @return the {@link ConsoleInput} to use.
+     */
+    public ConsoleInput getInput();
+    
+    /**
+     * @return the {@link ConsoleOutput} to use.
+     */
+    public ConsoleOutput getOutput();
+  }
+
+  
   public static final String DEFAULT_PROMPT = ">>";
   
   private ConsoleInput       _in;
@@ -23,6 +37,10 @@ public class Console {
   private boolean            _emptyLineAfterInput = true; 
   private int 							 _width    						= 80;
 
+  public Console(ConsoleIO io) {
+    this(io.getInput(), io.getOutput());
+  }
+  
   public Console(ConsoleInput in, ConsoleOutput out) {
     _in    = in;
     _out   = out;

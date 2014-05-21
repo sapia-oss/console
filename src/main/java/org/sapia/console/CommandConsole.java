@@ -23,6 +23,7 @@ import java.io.*;
  * @author Yanick Duchesne
  */
 public class CommandConsole extends Console {
+  
   private CommandFactory  _fac;
   private ConsoleListener _listener = new ConsoleListenerImpl();
   
@@ -35,6 +36,8 @@ public class CommandConsole extends Console {
     super();
     _fac = fac;
   }
+  
+  
 
   /**
    * Creates an instance of this class with the given factory. The
@@ -47,6 +50,20 @@ public class CommandConsole extends Console {
    */
   public CommandConsole(ConsoleInput in, ConsoleOutput out, CommandFactory fac) {
     super(in, out);
+    _fac = fac;
+  }
+  
+  /**
+   * Creates an instance of this class with the given factory. The
+   * input and output streams passed via the given {@link ConsoleIO}  
+   * are used internally for command-line reading and display output 
+   * respectively.
+   *
+   * @param io the {@link ConsoleIO}.
+   * @param fac a {@link CommandFactory}
+   */
+  public CommandConsole(ConsoleIO io, CommandFactory fac) {
+    super(io);
     _fac = fac;
   }
 

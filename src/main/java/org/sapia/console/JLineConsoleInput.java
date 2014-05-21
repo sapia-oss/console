@@ -4,6 +4,12 @@ import java.io.IOException;
 
 import jline.ConsoleReader;
 
+/**
+ * Wraps JLine's {@link ConsoleReader}.
+ * 
+ * @author yduchesne
+ *
+ */
 public final class JLineConsoleInput implements ConsoleInput {
 	
 	private ConsoleReader reader;
@@ -24,6 +30,13 @@ public final class JLineConsoleInput implements ConsoleInput {
 	  	return pwd.toCharArray();
 	  }
 	  return null;
+	}
+	
+	/**
+	 * @return the {@link ConsoleReader} that this instance wraps.
+	 */
+	public ConsoleReader getConsoleReader() {
+	  return reader;
 	}
 	
 	public static JLineConsoleInput newInstance() throws IOException {
