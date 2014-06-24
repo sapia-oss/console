@@ -62,4 +62,5 @@ public interface ConsoleOutput {
 	public void print(char c);
 	
 	public void flush();
+	
 }

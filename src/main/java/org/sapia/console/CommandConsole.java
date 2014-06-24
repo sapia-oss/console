@@ -93,6 +93,7 @@ public class CommandConsole extends Console {
           _listener.onAbort(this);
           break;
         }
+          
         if (line.length() == 0) {
           continue;
         } else {
@@ -136,15 +137,4 @@ public class CommandConsole extends Console {
     return new Context();
   }
 
-  //  public static void main(String[] args) {
-  //    try{
-  //      ReflectCommandFactory fac = new ReflectCommandFactory();
-  //      fac.addPackage("org.sapia.console");
-  //      CommandConsole cons = new CommandConsole(fac);
-  //      cons.start();
-  //
-  //    }catch(Throwable t){
-  //      t.printStackTrace();
-  //    }
-  //  }  
 }
