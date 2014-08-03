@@ -12,13 +12,27 @@ import java.io.InputStreamReader;
  */
 public interface ConsoleInput {
 	
+  /**
+   * A default {@link TerminalFacade} implementation, whose preferred width is always 80 characters.
+   *
+   */
+  public static final class DefaultTerminalFacade implements TerminalFacade {
+    
+    private static final int PREFERRED_WIDTH = 80;
+    
+    @Override
+    public int getPreferredWidth() {
+      return PREFERRED_WIDTH;
+    }
+  }
+  
 	/**
 	 * Reads input from stdin.
-	 * 
 	 */
 	public static final class DefaultConsoleInput implements ConsoleInput {
 		
 		private BufferedReader reader;
+		private TerminalFacade terminal;
 		
 		private DefaultConsoleInput() throws IOException {
 			reader = new BufferedReader(new InputStreamReader(System.in));
@@ -36,6 +50,11 @@ public interface ConsoleInput {
 		  	return pwd.toCharArray();
 		  }
 		  return null;
+		}
+		
+		@Override
+		public TerminalFacade getTerminal() {
+		  return terminal;
 		}
 		
 		public static final DefaultConsoleInput newInstance() {
@@ -60,4 +79,10 @@ public interface ConsoleInput {
 	 * @throws IOException if an IO problem occurred while attempting to read the password.
 	 */
 	public char[] readPassword() throws IOException;
+
+	/**
+	 * @return this instance's {@link TerminalFacade}.
+	 */
+	public TerminalFacade getTerminal();
+
 }

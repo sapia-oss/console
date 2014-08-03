@@ -31,19 +31,20 @@ public class Console {
   
   public static final String DEFAULT_PROMPT = ">>";
   
-  private ConsoleInput       _in;
-  private ConsoleOutput      _out;
-  private String             _prompt 						  = DEFAULT_PROMPT;
-  private boolean            _emptyLineAfterInput = true; 
-  private int 							 _width    						= 80;
+  private ConsoleInput       in;
+  private ConsoleOutput      out;
+  private String             prompt 						 = DEFAULT_PROMPT;
+  private boolean            emptyLineAfterInput = true; 
+  private int 							 width;
 
   public Console(ConsoleIO io) {
     this(io.getInput(), io.getOutput());
   }
   
   public Console(ConsoleInput in, ConsoleOutput out) {
-    _in    = in;
-    _out   = out;
+    this.in  = in;
+    this.out = out;
+    width = in.getTerminal().getPreferredWidth();
   }
   
   public Console() {
@@ -57,14 +58,14 @@ public class Console {
     if(width < 0){
       throw new IllegalArgumentException("Width cannot be negative");
     }
-    _width = width;
+    this.width = width;
   }
   
   /**
    * @return the display width, in number of characters
    */
   public int getWidth(){
-    return _width;
+    return width;
   }
     
   /**
@@ -73,7 +74,7 @@ public class Console {
    * @return this instance.
    */
   public Console setPrintEmptyLineAfterInput(boolean lineAfterInput) {
-    _emptyLineAfterInput = lineAfterInput;
+    emptyLineAfterInput = lineAfterInput;
     return this;
   }
   
@@ -82,7 +83,7 @@ public class Console {
    * @return
    */
   public boolean isEmptyLineAfterInput(){
-    return _emptyLineAfterInput;
+    return emptyLineAfterInput;
   }
 
   /**
@@ -90,21 +91,21 @@ public class Console {
    * for output.
    */
   public ConsoleOutput out() {
-    return _out;
+    return out;
   }
 
   /**
    * @return the {@link ConsoleInput} that is internally used for input.
    */
   public ConsoleInput in() {
-    return _in;
+    return in;
   }
 
   /**
    * @param out the {@link ConsoleOutput} that is used for output.
    */
   public void setOut(ConsoleOutput out) {
-    _out = out;
+    this.out = out;
   }
 
   /**
@@ -114,8 +115,8 @@ public class Console {
    * @return this instance.
    */
   public Console print(String msg) {
-    _out.print(msg);
-    _out.flush();
+    out.print(msg);
+    out.flush();
     return this;
   }
   
@@ -126,8 +127,8 @@ public class Console {
    * @return this instance.
    */
   public Console println(String msg) {
-    _out.println(msg);
-    _out.flush();
+    out.println(msg);
+    out.flush();
     return this;
   }
 
@@ -140,8 +141,8 @@ public class Console {
    * @see #setWidth(int) 
    */
   public Console center(String msg){
-    if(msg.length() < _width){
-      int margin = (_width - msg.length()) / 2;
+    if(msg.length() < width){
+      int margin = (width - msg.length()) / 2;
       for(int i = 0; i < margin; i++){
         print(" ");
       }
@@ -159,8 +160,8 @@ public class Console {
    * @return this instance.
    */  
   public Console println() {
-    _out.println();
-    _out.flush();
+    out.println();
+    out.flush();
     return this;
   }  
 
@@ -182,7 +183,7 @@ public class Console {
       print(msg + " ");
     }
     String input = readLine();
-    if(_emptyLineAfterInput){
+    if(emptyLineAfterInput){
       println();
     }
     return input;
@@ -202,7 +203,7 @@ public class Console {
       print(msg + " ");
     }
     String input = readLine();
-    if(_emptyLineAfterInput){
+    if(emptyLineAfterInput){
       println();
     }    
     return new Value(input);
@@ -214,13 +215,16 @@ public class Console {
    * @return this instance.
    */
   public Console prompt() {
-    _out.print(_prompt + " ");
-    _out.flush();
+    out.print(prompt + " ");
+    out.flush();
     return this;
   }
 
+  /**
+   * @param prompt sets the prompt to display.
+   */
   public void setPrompt(String prompt) {
-    _prompt = prompt;
+    this.prompt = prompt;
   }
 
   /**
@@ -229,7 +233,7 @@ public class Console {
    * @throws IOException
    */
   public String readLine() throws IOException {
-    return _in.readLine();
+    return in.readLine();
   }
   
   /**
@@ -268,7 +272,7 @@ public class Console {
    * @return this instance.
    */
   public Console repeat(char c){
-    return repeat(c, _width);
+    return repeat(c, width);
   }
   
   /**
@@ -280,7 +284,7 @@ public class Console {
    */
   public Console repeat(char c, int len){
     for(int i = 0; i < len; i++){
-      _out.print(c);
+      out.print(c);
     }
     println();
     return this;

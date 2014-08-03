@@ -9,13 +9,13 @@ import java.io.PrintWriter;
  *
  */
 public interface ConsoleOutput {
-	
+  
 	/**
 	 * Writes output to stdout.
 	 */
 	public static final class DefaultConsoleOutput implements ConsoleOutput {
 		
-		private PrintWriter writer;
+		private PrintWriter    writer;
 		
 		private DefaultConsoleOutput() {
 			writer = new PrintWriter(System.out, true);

@@ -2,43 +2,66 @@ package org.sapia.console.table;
 
 
 /**
+ * Holds metadata about a column in a {@link Table}.
+ * 
  * @author Yanick Duchesne
- * 2002-03-05
- *
  */
 public class ColumnMetaData {
-  private int           _width;
-  private int           _cellPadding = 1;
-  private TableMetaData _meta;
+  
+  private int           width;
+  private int           cellpadding = 1;
+  private TableMetaData meta;
 
   /**
-   * Constructor for ColumnMetaData.
+   * @param meta the {@link TableMetaData} corresponding to the table to which this instance belongs.
+   * @param width the column's width.
    */
   ColumnMetaData(TableMetaData meta, int width) {
-    _meta    = meta;
-    _width   = width;
+    this.meta  = meta;
+    this.width = width;
   }
 
+  /**
+   * @param width a new width.
+   */
   public void setWidth(int width) {
-    _width = width;
-    _meta.calcWidth();
+   this. width = width;
+   meta.calcWidth();
+  }
+  
+  /**
+   * @param newWidth the new width to assign to this instance.
+   * 
+   * @see TableMetaData#adjustToNewWidth(int)
+   */
+  void ajustToNewWidth(int newWidth) {
+    this.width = newWidth;
   }
 
+  /**
+   * @return this instance's width.
+   */
   public int getWidth() {
-    return _width;
+    return width;
   }
 
+  /**
+   * @return this instance's cell padding.
+   */
   public int getCellPadding() {
-    return _cellPadding;
+    return cellpadding;
   }
 
+  /**
+   * @param spacing a new cellpadding value.
+   */
   public void setCellPadding(int spacing) {
     if (spacing <= 0) {
-      _cellPadding = 1;
+      cellpadding = 1;
     } else {
-      _cellPadding = spacing;
+      cellpadding = spacing;
     }
 
-    _meta.calcWidth();
+    meta.calcWidth();
   }
 }

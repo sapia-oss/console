@@ -2,10 +2,12 @@ package org.sapia.console.table;
 
 
 /**
+ * Models a line of content.
+ * 
  * @author Yanick Duchesne
  * 
  */
-public class Line {
+class Line {
 	
   StringBuffer _content = new StringBuffer();
   Line         _next;
@@ -33,19 +35,6 @@ public class Line {
     return toReturn.toString();
   }
 
-  //	String render(int width, int cellSpacing){
-  //		insertSpaces(_content, cellSpacing);
-  //		appendSpaces(_content, width, cellSpacing);		
-  //		StringBuffer toReturn = new StringBuffer();
-  //		toReturn.append(_content);
-  //
-  //		if(_next != null){
-  //			toReturn.append(System.getProperty("line.separator"));			
-  //			toReturn.append(_next.render(width, cellSpacing));
-  //		}
-  //		
-  //		return toReturn.toString();
-  //	}
   int getLineCount() {
     Line current = this;
     int  count = 1;

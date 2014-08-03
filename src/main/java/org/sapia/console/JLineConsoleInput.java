@@ -42,16 +42,12 @@ public final class JLineConsoleInput implements ConsoleInput {
  /**
   * @return a new {@link TerminalFacade}.
   */
+	@Override
 	public TerminalFacade getTerminal() {
 	  return new TerminalFacade() {
-      @Override
-      public int getWidth() {
-        return reader.getTermwidth();
-      }
-      
-      @Override
-      public int getHeight() {
-        return reader.getTermheight();
+	    @Override
+	    public int getPreferredWidth() {
+	      return reader.getTermwidth();
       }
     };
 	}

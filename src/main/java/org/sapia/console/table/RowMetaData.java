@@ -2,21 +2,22 @@ package org.sapia.console.table;
 
 
 /**
+ * Holds metadata about a {@link Row}.
+ * 
  * @author Yanick Duchesne
- * 2002-03-05
- *
  */
 public class RowMetaData {
-  private int _columnCount;
+  
+  private int columnCount;
 
   /**
-   * Constructor for RowMetaData.
+   * @param colCount the number of columns that the new {@link RowMetaData} will holds.
    */
   RowMetaData(int colCount) {
-    _columnCount = colCount;
+    columnCount = colCount;
   }
 
   public int getColumnCount() {
-    return _columnCount;
+    return columnCount;
   }
 }
