@@ -24,8 +24,8 @@ import java.io.*;
  */
 public class CommandConsole extends Console {
   
-  private CommandFactory  _fac;
-  private ConsoleListener _listener = new ConsoleListenerImpl();
+  private CommandFactory  commandFactory;
+  private ConsoleListener consoleListener = new ConsoleListenerImpl();
   
   /**
    * Creates an instance of this class with the given factory.
@@ -34,10 +34,8 @@ public class CommandConsole extends Console {
    */
   public CommandConsole(CommandFactory fac) {
     super();
-    _fac = fac;
+    commandFactory = fac;
   }
-  
-  
 
   /**
    * Creates an instance of this class with the given factory. The
@@ -50,7 +48,7 @@ public class CommandConsole extends Console {
    */
   public CommandConsole(ConsoleInput in, ConsoleOutput out, CommandFactory fac) {
     super(in, out);
-    _fac = fac;
+    commandFactory = fac;
   }
   
   /**
@@ -64,14 +62,21 @@ public class CommandConsole extends Console {
    */
   public CommandConsole(ConsoleIO io, CommandFactory fac) {
     super(io);
-    _fac = fac;
+    commandFactory = fac;
+  }
+  
+  /**
+   * @return this instance's {@link CommandFactory}.
+   */
+  public CommandFactory getCommandFactory() {
+    return commandFactory;
   }
 
   /**
    * Sets this instance's command listener.
    */
   public void setCommandListener(ConsoleListener listener) {
-    _listener = listener;
+    consoleListener = listener;
   }
 
   /**
@@ -82,7 +87,7 @@ public class CommandConsole extends Console {
   public void start() {
     String line;
     String name = null;
-    _listener.onStart(this);
+    consoleListener.onStart(this);
 
     while (true) {
       try {
@@ -90,7 +95,7 @@ public class CommandConsole extends Console {
         line = readLine();
 
         if (line == null) {
-          _listener.onAbort(this);
+          consoleListener.onAbort(this);
           break;
         }
           
@@ -104,7 +109,7 @@ public class CommandConsole extends Console {
           }
 
           if (cmdLine.isNextArg()) {
-            Command cmd = _fac.getCommandFor(name = cmdLine.chopArg().getName());
+            Command cmd = commandFactory.getCommandFor(name = cmdLine.chopArg().getName());
             Context ctx = newContext();
             ctx.setUp(this, cmdLine);
             cmd.execute(ctx);
@@ -116,7 +121,7 @@ public class CommandConsole extends Console {
         this.println(e.getMessage());
         
       } catch (AbortException e) {
-        _listener.onAbort(this);
+        consoleListener.onAbort(this);
 
         break;
       } catch (IOException e) {
@@ -124,7 +129,7 @@ public class CommandConsole extends Console {
 
         break;
       } catch (CommandNotFoundException e) {
-        _listener.onCommandNotFound(this, name);
+        consoleListener.onCommandNotFound(this, name);
       }
     }
   }
