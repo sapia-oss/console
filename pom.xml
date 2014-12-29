@@ -23,7 +23,13 @@
   </licenses>
 
   <packaging>jar</packaging>
-
+ 
+  <scm>
+    <connection>scm:git:https://github.com/sapia-oss/console.git</connection>
+    <developerConnection>scm:git:git@github.com:sapia-oss/console.git</developerConnection>
+    <url>https://github.com/sapia-oss/console</url>
+  </scm>
+ 
   <dependencies>
     <dependency>
       <groupId>jline</groupId>
