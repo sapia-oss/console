@@ -372,6 +372,20 @@ public class CmdLine implements Cloneable {
     return opt;
   }
   
+  
+  /**
+   * @param optName an option name.
+   * @return the {@link Option} with the given name. If no such option is found, returns
+   * a new {@link Option} whose value will be <code>null</code>. 
+   */
+  public Option getSafeOpt(String optName) {
+    Option opt = _options.get(optName);
+    if (opt == null) {
+      return new Option(optName);
+    }
+    return opt;    
+  }
+  
   /**
    * Returns the {@link Option} with the given name, or throws an exception if such an option cannot
    * be found - the returned option may or may not have a value.
@@ -387,6 +401,23 @@ public class CmdLine implements Cloneable {
       throw new InputException("option '" + optName + "' not specified.");
     }
     return opt;    
+  }
+  
+  /**
+   * Returns the {@link Option} with the given name, or a new {@link Option} with the given default value if:
+   * a) no option is found for the given name; or b) an option is found for the given name, but it has no value.
+   * 
+   * @param optName an option name.
+   * @param defaultVal the default value to use, if no option corresonding to the given name is found,
+   * or if one is found, but has no value.
+   * @return
+   */
+  public Option getOptOrDefault(String optName, String defaultVal) {
+    Option opt = _options.get(optName);
+    if (opt == null || opt.getValue() == null) {
+      return new Option(optName, defaultVal);
+    } 
+    return opt;
   }
 
   /**
