@@ -33,9 +33,9 @@ public class OptionsTest {
     requiredOpt.validate(CmdLine.parse("-someOpt"));
   }
   
-  @Test
+  @Test(expected = InputException.class)
   public void testValidate_must_have_value_opt_null() {
-    mustHaveValueOpt.validate(CmdLine.parse("-other val"));
+    mustHaveValueOpt.validate(CmdLine.parse("-opt"));
   }
   
   @Test
@@ -50,7 +50,7 @@ public class OptionsTest {
   
   @Test
   public void testValidate_non_required() {
-    nonRequiredOpt.validate(CmdLine.parse("-someOpt"));
+    nonRequiredOpt.validate(CmdLine.parse("-opt"));
   }
 
 }

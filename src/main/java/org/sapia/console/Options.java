@@ -2,6 +2,7 @@ package org.sapia.console;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -298,7 +299,7 @@ public class Options {
    * @return this instance.
    */
   public Options sort(Comparator<OptionDef> comparator) {
-    this.defs.sort(comparator);
+    Collections.sort(defs, comparator);
     return this;
   }
   
