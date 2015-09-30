@@ -86,17 +86,8 @@ import java.util.Map;
  *     in.close();
  *   }
  * </pre>
- *
- *
- *
- *
- *
- *
- *
- *
- *
+ * 
  * @author Yanick Duchesne
- * 23-Dec-02
  */
 public class CmdLine implements Cloneable {
   static final char SPACE    = ' ';
@@ -218,13 +209,34 @@ public class CmdLine implements Cloneable {
   }
 
   /**
+   * @return <code>true</code> if this instance as no options or arguments.
+   */
+  public boolean isEmpty() {
+    return _elems.isEmpty();
+  }
+  
+  /**
    * Returns the next command-line element (and internally increments
    * the iteration counter).
    *
    * @return a {@link CmdElement}.
+   * 
+   * @see #peek()
    */
   public CmdElement next() {
     return _elems.get(_index++);
+  }
+  
+  /**
+   * Returns the next command-line element, but does not increment
+   * the iteration counter).
+   * 
+   * @return a {@link CmdElement}.
+   * 
+   * @see #next()
+   */
+  public CmdElement peek() {
+    return _elems.get(_index);
   }
 
   /**
@@ -257,7 +269,7 @@ public class CmdLine implements Cloneable {
    */
   public Arg assertNextArg() throws InputException {
     if (!hasNext() || !isNextArg()) {
-      throw new InputException("argument expected");
+      throw new InputException("Argument expected");
     }
 
     return (Arg) _elems.get(_index++);
@@ -302,7 +314,7 @@ public class CmdLine implements Cloneable {
    */
   public Arg assertNextArg(String[] argNames) throws InputException {
     if (!hasNext() || !isNextArg()) {
-      throw new InputException("argument expected");
+      throw new InputException("Argument expected");
     }
 
     Arg arg = (Arg) _elems.get(_index++);
@@ -323,8 +335,8 @@ public class CmdLine implements Cloneable {
       }
     }
 
-    throw new InputException("one of the following arguments expected: " +
-      buf.toString() + ".");
+    throw new InputException("One of the following arguments expected: " +
+      buf.toString());
   }
 
   /**
@@ -352,11 +364,16 @@ public class CmdLine implements Cloneable {
    */
   public Option assertOption(String optName, boolean hasValue)
     throws InputException {
-    if (!containsOption(optName, hasValue)) {
-      throw new InputException("option '" + optName + "' not specified.");
+    Option o = _options.get(optName);
+    
+    if (o == null) {
+      throw new InputException("Option '" + optName + "' not specified");
     }
-
-    return _options.get(optName);
+    if (hasValue && o.getValue() == null) {
+      throw new InputException("Option '" + optName + "' must have a value");
+    }
+  
+    return o;
   }
   
   /**
@@ -372,6 +389,20 @@ public class CmdLine implements Cloneable {
     return opt;
   }
   
+  
+  /**
+   * @param optName an option name.
+   * @return the {@link Option} with the given name. If no such option is found, returns
+   * a new {@link Option} whose value will be <code>null</code>. 
+   */
+  public Option getSafeOpt(String optName) {
+    Option opt = _options.get(optName);
+    if (opt == null) {
+      return new Option(optName);
+    }
+    return opt;    
+  }
+  
   /**
    * Returns the {@link Option} with the given name, or throws an exception if such an option cannot
    * be found - the returned option may or may not have a value.
@@ -384,9 +415,26 @@ public class CmdLine implements Cloneable {
   public Option getOptNotNull(String optName) {
     Option opt = _options.get(optName);
     if (opt == null) {
-      throw new InputException("option '" + optName + "' not specified.");
+      throw new InputException("Option '" + optName + "' not specified");
     }
     return opt;    
+  }
+  
+  /**
+   * Returns the {@link Option} with the given name, or a new {@link Option} with the given default value if:
+   * a) no option is found for the given name; or b) an option is found for the given name, but it has no value.
+   * 
+   * @param optName an option name.
+   * @param defaultVal the default value to use, if no option corresonding to the given name is found,
+   * or if one is found, but has no value.
+   * @return
+   */
+  public Option getOptOrDefault(String optName, String defaultVal) {
+    Option opt = _options.get(optName);
+    if (opt == null || opt.getValue() == null) {
+      return new Option(optName, defaultVal);
+    } 
+    return opt;
   }
 
   /**
@@ -405,8 +453,8 @@ public class CmdLine implements Cloneable {
     Option opt = assertOption(optName, true);
 
     if (!opt.getValue().equals(value)) {
-      throw new InputException("option '" + optName + "' expects value '" +
-        value + "'.");
+      throw new InputException("Option '" + optName + "' expects value '" +
+        value + "'");
     }
 
     return opt;
@@ -443,8 +491,8 @@ public class CmdLine implements Cloneable {
       }
     }
 
-    throw new InputException("option '" + optName +
-      "' expects one of the following values: " + buf.toString() + ".");
+    throw new InputException("Option '" + optName +
+      "' expects one of the following values: " + buf.toString());
   }
 
   /**
@@ -470,6 +518,15 @@ public class CmdLine implements Cloneable {
 
     return true;
   }
+  
+  /**
+   * @param name the option's name.
+   * @return <code>true</code> if this instance contains an option with the given name (whether the
+   * options has a value or not).
+   */
+  public boolean containsOption(String name) {
+    return _options.get(name) != null;
+  }
 
   /**
    * Returns <code>true</code> if this instance containes an
@@ -487,6 +544,52 @@ public class CmdLine implements Cloneable {
     }
 
     return (opt.getValue() != null) && opt.getValue().equals(value);
+  }
+  
+  /**
+   * @return the {@link List} of {@link Option}s this instance holds.
+   */
+  public List<Option> getOptions() {
+    List<Option> toReturn = new ArrayList<Option>();
+    for (CmdElement e : _elems) {
+      if (e instanceof Option) {
+        toReturn.add((Option) e);
+      }
+    }
+    return toReturn;
+  }
+  
+  /**
+   * @return the {@link List} of remaining {@link Option}s this instance holds.
+   */
+  public List<Option> getRemainingOptions() {
+    List<Option> toReturn = new ArrayList<Option>();
+    for (int i = _index; i < _elems.size(); i++) {
+      CmdElement e = _elems.get(i);
+      if (e instanceof Option) {
+        toReturn.add((Option) e);
+      }
+    }
+    return toReturn;
+  }
+  
+  /**
+   * Removes from this instance the option with the given name.
+   * 
+   * @param name the name of the option to remove.
+   * @return this instance.
+   */
+  public CmdLine removeOption(String name) {
+    for (int i = 0; i < _elems.size(); i++) {
+      CmdElement e = _elems.get(i);
+      if (e instanceof Option && e.getName().equals(name)) {
+        _elems.remove(i);
+        if (_index > 0) {
+          _index--;
+        }
+      }
+    }
+    return this;
   }
 
   /**
@@ -507,7 +610,7 @@ public class CmdLine implements Cloneable {
     } else if (elem instanceof Arg) {
       addArg((Arg) elem);
     } else {
-      throw new IllegalArgumentException("argument must be an instance of " +
+      throw new IllegalArgumentException("Argument must be an instance of " +
         Option.class.getName() + " or " + Arg.class.getName());
     }
   }
@@ -642,7 +745,7 @@ public class CmdLine implements Cloneable {
 
     return (String[]) options.toArray(new String[options.size()]);
   }
-
+  
   /**
    * Returns a clone of this instance.
    *

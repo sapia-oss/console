@@ -32,7 +32,7 @@ public interface ConsoleInput {
 	public static final class DefaultConsoleInput implements ConsoleInput {
 		
 		private BufferedReader reader;
-		private TerminalFacade terminal;
+		private TerminalFacade terminal = new DefaultTerminalFacade();
 		
 		private DefaultConsoleInput() throws IOException {
 			reader = new BufferedReader(new InputStreamReader(System.in));

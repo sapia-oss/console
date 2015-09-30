@@ -1,5 +1,6 @@
 package org.sapia.console;
 
+import java.io.PrintStream;
 import java.io.PrintWriter;
 
 /**
@@ -19,6 +20,14 @@ public interface ConsoleOutput {
 		
 		private DefaultConsoleOutput() {
 			writer = new PrintWriter(System.out, true);
+    }
+		
+		public DefaultConsoleOutput(PrintStream out) {
+      writer = new PrintWriter(out, true);
+    }
+
+    public DefaultConsoleOutput(PrintWriter out) {
+      writer = new PrintWriter(out, true);
     }
 		
 		@Override

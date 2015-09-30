@@ -305,6 +305,16 @@ public class Console {
   }
   
   /**
+   * @param t a {@link Throwable} instance, whose stacktrace should be 
+   * redirected to this instance's {@link ConsoleOutput}.
+   */
+  public void printStackTrace(Throwable t) {
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
+    t.printStackTrace(new PrintStream(output, true));
+    out.println(output.toString());
+  }
+  
+  /**
    * Searches for the given resource and returns its content in a string.
    * @param name the name of the resource.
    * @return the content of the resource.
