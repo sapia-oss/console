@@ -1,7 +1,5 @@
 package org.sapia.console;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Describes a command-line option.
@@ -11,88 +9,10 @@ import java.util.List;
  */
 public final class OptionDef implements Comparable<OptionDef> {
   
-  /**
-   * A builder used to build one to many {@link OptionDef}.
-   * 
-   * @author yduchesne
-   *
-   */
-  public static final class Builder {
-    
-    private List<OptionDef> built = new ArrayList<OptionDef>();
-    
-    private String name, description;
-    private boolean required, mustHaveValue;
-    
-    public Builder name(String name) {
-      this.name = name;
-      return this;
-    }
-    
-    public Builder desc(String description) {
-      this.description = description;
-      return this;
-    }
-    
-    public Builder required() {
-      required = true;
-      return this;
-    }
-    
-    public Builder optional() {
-      required = false;
-      return this;
-    }
-    
-    public Builder mustHaveValue() {
-      mustHaveValue = true;
-      return this;
-    }
-    
-    public Builder option() {
-      if (name == null) {
-        throw new IllegalArgumentException("Option name must be provided");
-      }
-      if (description == null) {
-        description = "";
-      }
-      OptionDef opt = new OptionDef(name, mustHaveValue, required);
-      opt.description = description;
-      built.add(opt);
-      
-      reset();
-      
-      return this;
-    }
-    
-    public List<OptionDef> build() {
-      reset();
-      return built;
-    }
-    
-    public OptionChecker buildChecker() {
-      reset();
-      return new OptionChecker(built);
-    }
-    
-    public static Builder newInstance() {
-      return new Builder();
-    }
-    
-    private void reset() {
-      name          = null;
-      description   = null;
-      mustHaveValue = false;
-      required      = false;      
-    }
-    
-  }
-  
-  // ==========================================================================
-  
-  private String  name;
-  private String  description;
-  private boolean mustHaveValue, required;
+  String  name;
+  String  valueName = "";
+  String  description = "";
+  boolean mustHaveValue, required;
   
   /**
    * @param name the option name.
@@ -113,7 +33,7 @@ public final class OptionDef implements Comparable<OptionDef> {
   public OptionDef(String name, boolean mustHaveValue, boolean required) {
     this.name = name;
     this.mustHaveValue = mustHaveValue;
-    this.required = mustHaveValue || required;
+    this.required = required;
   }
   
   
@@ -122,6 +42,21 @@ public final class OptionDef implements Comparable<OptionDef> {
    */
   public String getName() {
     return name;
+  }
+  
+  /**
+   * This method returns the name of assign to the value argument, when displaying help,
+   * such as in:
+   * <pre>
+   * - myoption <myValueName>
+   * </pre>
+   * <p>
+   * This should be taken into account only when {@link #mustHaveValue()} returns <code>true</code>.
+   * 
+   * @return the name of the value to use when displaying help.
+   */
+  public String getValueName() {
+    return valueName;
   }
   
   /**

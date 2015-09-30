@@ -4,8 +4,7 @@ package org.sapia.console;
 /**
  * Models a command-line argument.
  *
- * @author Yanick Duchesne
- * 23-Dec-02
+ * @author yduchesne
  */
 public class Arg extends CmdElement {
   public Arg(String name) {

@@ -9,7 +9,8 @@ import java.util.StringTokenizer;
  * Models a command-line option.
  *
  * @see org.sapia.console.CmdLine
- * @author Yanick Duchesne
+ * 
+ * @author yduchesne
  */
 public class Option extends CmdElement {
 	
@@ -61,7 +62,7 @@ public class Option extends CmdElement {
       return new String[]{};
     }
     List<String> tokens = new ArrayList<String>();
-    StringTokenizer tk = new StringTokenizer(_value);
+    StringTokenizer tk = new StringTokenizer(_value, "" + delim);
     while (tk.hasMoreTokens()) {
       tokens.add(tk.nextToken());
     }
@@ -74,7 +75,7 @@ public class Option extends CmdElement {
    */
   public String getValueNotNull() {
     if (_value == null) {
-      throw new InputException("no value found for option: " + _name);
+      throw new InputException("No value found for option: '" + _name + "'");
     }
     return _value;
   }
@@ -123,15 +124,13 @@ public class Option extends CmdElement {
    */
   public int asInt() throws InputException {
     if (_value == null) {
-      throw new InputException("Integer expected for option '" + getName() +
-        "'");
+      throw new InputException("Integer expected for option '" + getName() + "'");
     }
 
     try {
       return Integer.parseInt(_value);
     } catch (NumberFormatException e) {
-      throw new InputException("Integer expected for option '" + getName() +
-        "'");
+      throw new InputException("Integer expected for option '" + getName() + "'");
     }
   }
   
@@ -155,7 +154,7 @@ public class Option extends CmdElement {
    */
   public boolean asBoolean() {
     if (_value == null) {
-      return false;
+      return true;
     }
     return _value.equalsIgnoreCase("true") || _value.toLowerCase().startsWith("y");
   }

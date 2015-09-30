@@ -1,43 +1,37 @@
 package org.sapia.console;
 
-import junit.framework.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
+import org.junit.Test;
 
 
-/**
- * @author Yanick Duchesne
- * 5-May-2003
- */
-public class CmdLineTest extends TestCase {
+public class CmdLineTest {
   CmdLine _cmd;
 
-  /**
-   * Constructor for CmdLineTest.
-   */
-  public CmdLineTest(String name) {
-    super(name);
-  }
-
-  /**
-   * @see junit.framework.TestCase#setUp()
-   */
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     _cmd = CmdLine.parse(
         "arg1 arg2 -opt1 val1 arg3 -opt2 val2 -opt3 \"opt3 value\" -opt4 -opt5");
   }
 
   public void testFirst() throws Exception {
-    super.assertEquals("arg1", ((Arg) _cmd.first()).getName());
+    assertEquals("arg1", ((Arg) _cmd.first()).getName());
   }
 
+  @Test
   public void testLast() throws Exception {
-    super.assertEquals("opt5", ((Option) _cmd.last()).getName());
+    assertEquals("opt5", ((Option) _cmd.last()).getName());
   }
 
+  @Test
   public void testFilterArgs() throws Exception {
     CmdLine args = _cmd.filterArgs();
-    super.assertEquals(3, args.size());
+    assertEquals(3, args.size());
   }
 
+  @Test
   public void testAssertNextArg() throws Exception {
     CmdLine args = _cmd.filterArgs();
 
@@ -46,56 +40,73 @@ public class CmdLineTest extends TestCase {
     }
   }
 
+  @Test
   public void testAssertArgs() throws Exception {
     CmdLine args = _cmd.filterArgs();
     args.assertNextArg(new String[] { "arg1", "arg2", "arg3" });
     args.assertNextArg(new String[] { "arg1", "arg2", "arg3" });
     args.assertNextArg(new String[] { "arg1", "arg2", "arg3" });
-
-    try {
-      args.assertNextArg(new String[] { "arg1", "arg2", "arg3" });
-      throw new Exception("InputException should have been thrown");
-    } catch (InputException e) {
-      // ok
-    }
+  }
+  
+  @Test(expected = InputException.class)
+  public void testAssertArgs_no_more_left() {
+    CmdLine args = _cmd.filterArgs();
+    args.assertNextArg(new String[] { "arg1", "arg2", "arg3" });
+    args.assertNextArg(new String[] { "arg1", "arg2", "arg3" });
+    args.assertNextArg(new String[] { "arg1", "arg2", "arg3" });
+    
+    args.assertNextArg(new String[] { "arg1", "arg2", "arg3" });
+    
   }
 
+  @Test
   public void testContainsOption() throws Exception {
-    super.assertTrue("Option missing", _cmd.containsOption("opt4", false));
-    super.assertTrue("Option should not have been found",
+    assertTrue("Option missing", _cmd.containsOption("opt4", false));
+    assertTrue("Option should not have been found",
       !_cmd.containsOption("opt4", true));
   }
 
+  @Test
   public void testAssertOption() throws Exception {
     _cmd.assertOption("opt3", true);
     _cmd.assertOption("opt2", "val2");
     _cmd.assertOption("opt2", new String[] { "val1", "val2", "val3" });
   }
   
+  @Test
   public void testGetOpt() {
     assertEquals("val2", _cmd.getOpt("opt2").getValue());
   }
   
+  @Test
   public void testGetOptNotNull() {
     assertEquals("val2", _cmd.getOpt("opt2").getValue());
   }
   
+  @Test(expected = InputException.class)
   public void testGetOptNotNullFails() {
-    try {
-      assertEquals("val2", _cmd.getOptNotNull("opt10").getValue());
-      fail("Option should not have been found");
-    } catch (InputException e) {
-      // ok
-    }
+    _cmd.getOptNotNull("opt10").getValue();
+  }
+  
+  @Test
+  public void testGetSafeOpt() {
+    assertTrue(_cmd.getSafeOpt("opt10").getValue() == null);
+  }
+  
+  @Test
+  public void testGetOptOrDefault() {
+    assertEquals("default", _cmd.getOptOrDefault("opt10", "default").getValue());
   }
 
+  @Test
   public void testChop() throws Exception {
     int size = _cmd.size();
     _cmd.chop();
-    super.assertEquals(size - 1, _cmd.size());
+    assertEquals(size - 1, _cmd.size());
   }
 
+  @Test
   public void testChopArg() throws Exception {
-    super.assertEquals("arg1", _cmd.chopArg().getName());
+    assertEquals("arg1", _cmd.chopArg().getName());
   }
 }

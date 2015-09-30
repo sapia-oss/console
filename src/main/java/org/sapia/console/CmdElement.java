@@ -27,4 +27,18 @@ public abstract class CmdElement {
   public String getName() {
     return _name;
   }
+  
+  /**
+   * @param candidates one or more names to compare with this instance's name.
+   * @return <code>true</code> if either one of the candidate names is the same as 
+   * this instance's.
+   */
+  public boolean nameEquals(String...candidates) {
+    for (String c : candidates) {
+      if (_name.equals(c)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
